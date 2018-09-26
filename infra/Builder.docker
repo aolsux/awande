@@ -1,0 +1,26 @@
+# This is the docker container that is run by Jenkins. Our Pipeline will be executed from within this container.
+
+FROM python:3.6-slim
+
+# switch to root (because we need docker in order to build our own docker image from within the pipeline container)
+USER root
+
+# setup requirements for docker installation
+RUN apt-get update && \
+            apt-get -y install apt-transport-https \
+                                 ca-certificates \
+                                 curl \
+                                 gnupg2 \
+                                 git \
+                                 software-properties-common && \
+            curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
+    add-apt-repository \
+           "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+           $(lsb_release -cs) \
+           stable" && \
+    apt-get update
+
+# Below we need to fix the version to our docker host version
+RUN apt-get -y install docker-ce=17.12.1~ce-0~debian
+
+# do not switch back, as we want to use the docker socket

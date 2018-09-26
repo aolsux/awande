@@ -54,3 +54,9 @@ implemented in the Jenkis.docker file in this directory which is used by the doc
 script, build the "Jenkins with Docker" image with (on your host)
 
     docker build -t jenkins-docker:1.0.0 -f ./Jenkins.docker .
+    
+# Building the Builder
+Our pipeline script needs git to be available within the docker image. We define our own custom builder container in the 
+Builder.docker file.
+
+    docker build -t builder:1.0.0 -f ./Builder.docker . 
