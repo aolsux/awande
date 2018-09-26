@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+  bridged-network:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.4.2
+    networks:
+    - bridged-network
+    ports:
+    - 5432:5432
+    environment:
+      FOO: BAR
+    volumes:
+    - ../docker-volumes/prometheus:/foo/bar
+
+  jenkins:
+    image: jenkins/jenkins:2.143-slim
+    networks:
+      - bridged-network
+    ports:
+    - 080:8080
