@@ -9,4 +9,6 @@ RUN pip install -r requirements.txt
 COPY ./awande /awande
 WORKDIR /awande
 
+EXPOSE 8090
+
 CMD ["python", "main.py"]
