@@ -3,11 +3,17 @@
 import datetime
 
 from connexion import NoContent
+from prometheus_client import Histogram, Counter
 
 pets = {}
 
+histogram = Histogram('response_latency_seconds', 'Response latency (seconds)')
+counter = Counter("rest_call_count", "The number of calls to the rest backend", ['method', 'endpoint'])
 
+
+@histogram.time()
 def post(pet):
+    counter.labels('post', 'pets').inc()
     count = len(pets)
     pet['id'] = count + 1
     pet['registered'] = datetime.datetime.now()
@@ -16,6 +22,7 @@ def post(pet):
 
 
 def put(id, pet):
+    counter.labels('put', 'pets').inc()
     id = int(id)
     if pets.get(id) is None:
         return NoContent, 404
@@ -25,6 +32,7 @@ def put(id, pet):
 
 
 def delete(id):
+    counter.labels('delete', 'pets').inc()
     id = int(id)
     if pets.get(id) is None:
         return NoContent, 404
@@ -33,6 +41,7 @@ def delete(id):
 
 
 def get(id):
+    counter.labels('get', 'pets').inc()
     id = int(id)
     if pets.get(id) is None:
         return NoContent, 404
@@ -41,5 +50,6 @@ def get(id):
 
 
 def search():
+    counter.labels('search', 'pets').inc()
     # NOTE: we need to wrap it with list for Python 3 as dict_values is not JSON serializable
     return list(pets.values())

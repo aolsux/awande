@@ -6,6 +6,7 @@ networks:
 
 volumes:
   jenkins-home:
+  prometheus-data:
 
 services:
 
@@ -20,3 +21,21 @@ services:
     volumes:
     - jenkins-home:/var/jenkins_home
     - /var/run/docker.sock:/var/run/docker.sock
+
+  prometheus:
+    image: prom/prometheus:v2.4.2
+    networks:
+    - bridged-network
+    ports:
+    - 9090:9090
+    volumes:
+    - prometheus-data:/prometheus
+    - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  awande:
+    image: awande:v0.6.0
+    networks:
+    - bridged-network
+    ports:
+    - 8090:8090
+    - 8091:8091

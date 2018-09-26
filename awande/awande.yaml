@@ -5,9 +5,6 @@ info:
   license:
     name: MIT
 
-# this is hacky, replace it with localhost or the IP where you will actually run the service.
-#host: 192.168.88.100:8090
-
 basePath: /api
 
 schemes:

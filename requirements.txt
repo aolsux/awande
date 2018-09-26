@@ -1,1 +1,2 @@
 connexion==1.5.3
+prometheus_client==0.3.1

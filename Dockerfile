@@ -9,6 +9,9 @@ RUN pip install -r requirements.txt
 COPY ./awande /awande
 WORKDIR /awande
 
+# rest api
 EXPOSE 8090
+# metrics port
+EXPOSE 8091
 
 CMD ["python", "main.py"]
