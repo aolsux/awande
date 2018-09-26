@@ -4,21 +4,19 @@ networks:
   bridged-network:
     driver: bridge
 
+volumes:
+  jenkins-home:
+
 services:
-  prometheus:
-    image: prom/prometheus:v2.4.2
-    networks:
-    - bridged-network
-    ports:
-    - 5432:5432
-    environment:
-      FOO: BAR
-    volumes:
-    - ../docker-volumes/prometheus:/foo/bar
 
   jenkins:
-    image: jenkins/jenkins:2.143-slim
+    image: jenkins-docker:1.0.0
+    user: "root:root"
     networks:
       - bridged-network
     ports:
-    - 080:8080
+    - 8080:8080
+    - 50000:50000
+    volumes:
+    - jenkins-home:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
